@@ -3,12 +3,15 @@ main .section {
     margin-bottom: 48px;
 }
 
+.story-module-wrapper {
+    background: #e60012;
+}
+
 .story-module-container .story-module-wrapper {
     max-width: 100%;
 }
 
 .story-module {
-    background: #e60012;
     color: #fff;
 }
 
@@ -25,6 +28,8 @@ main .section {
     grid-template-columns: 1fr 1fr;
     column-gap: 8px;
     align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 .story-module .columns-img-col {
