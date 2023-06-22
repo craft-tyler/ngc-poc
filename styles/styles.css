@@ -20,6 +20,7 @@
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc;
   --text-color: #000;
+  --header-color: #007bff;
 
   /* fonts */
   --body-font-family: 'Open Sans', helvetica, ubuntu, roboto, noto, sans-serif;
@@ -46,7 +47,7 @@
 
 @media (min-width: 900px) {
   :root {
-    --heading-font-size-xxl: 60px;
+    --heading-font-size-xxl: 70px;
     --heading-font-size-xl: 48px;
     --heading-font-size-l: 36px;
     --heading-font-size-m: 30px;
@@ -76,11 +77,12 @@ header {
 h1, h2, h3,
 h4, h5, h6 {
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: .5em;
   scroll-margin: calc(var(--nav-height) + 1em);
+  color: var(--header-color);
 }
 
 h1 { font-size: var(--heading-font-size-xxl) }
@@ -244,4 +246,9 @@ main .section {
 /* section metadata */
 main .section.highlight {
   background-color: var(--highlight-background-color);
+}
+
+.quote.block {
+  border-left: 3px solid #000;
+  padding-left: 40px;
 }
