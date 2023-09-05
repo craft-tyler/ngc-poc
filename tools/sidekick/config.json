@@ -1,0 +1,11 @@
+{
+    "project": "ngc-poc",
+    "plugins": [
+        {
+            "id": "date-preview",
+            "title": "Preview with Date",
+            "environments": [ "dev", "preview" ],
+            "event": "date-preview"
+        }
+    ]
+}
