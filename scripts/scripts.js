@@ -180,6 +180,24 @@ async function loadLazy(doc) {
   import('./scheduling/scheduling.js');
 }
 
+const linksInit = () => {
+  const sk = detail.data;
+
+  console.log(sk);
+}
+
+const sk = document.querySelector('helix-sidekick');
+if (sk) {
+  // sidekick already loaded
+  sk.addEventListener('custom:links', linksInit);
+} else {
+  // wait for sidekick to be loaded
+  document.addEventListener('sidekick-ready', () => {
+    document.querySelector('helix-sidekick')
+      .addEventListener('custom:links', linksInit);
+  }, { once: true });
+}
+
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
