@@ -6,6 +6,12 @@
             "title": "Preview with Date",
             "environments": [ "dev", "preview" ],
             "event": "date-preview"
+        },
+        {
+            "id": "links",
+            "title": "Links",
+            "url": "/tools/sidekick/links.html",
+            "event": "links"
         }
     ]
 }
