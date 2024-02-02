@@ -16,3 +16,5 @@ if (sk) {
             .addEventListener('custom:gpt', gpt);
     }, { once: true });
 }
+
+return sk;
