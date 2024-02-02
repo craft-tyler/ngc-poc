@@ -8,6 +8,11 @@
             "event": "date-preview"
         },
         {
+            "id": "gpt",
+            "title": "GPT",
+            "event": "gpt"
+        },
+        {
             "id": "links",
             "title": "Links",
             "event": "links"
