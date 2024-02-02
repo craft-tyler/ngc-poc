@@ -5,8 +5,8 @@ const gpt = ({ detail }) => {
     console.log('winner winner chicken dinner');
 };
 
-const sk = document.querySelector('helix-sidekick');
-if (sk) {
+const gptsk = document.querySelector('helix-sidekick');
+if (gptsk) {
     // sidekick already loaded
     sk.addEventListener('custom:gpt', gpt);
 } else {
@@ -17,4 +17,4 @@ if (sk) {
     }, { once: true });
 }
 
-return sk;
+return gptsk;
