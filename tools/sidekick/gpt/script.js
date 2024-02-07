@@ -173,4 +173,6 @@ function showLoadingIndicator(show) {
     }
 }
 
+console.log(window.parent);
+
 checkForApiKey();
