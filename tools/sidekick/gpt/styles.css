@@ -31,6 +31,14 @@ body {
     width: 400px;
 }
 
+#loginScreen {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px);
+    padding: 20px 20px 30px;
+    overflow: scroll;
+}
+
 /* Style the chat container */
 #chatScreen {
     display: flex;
@@ -46,12 +54,13 @@ body {
 }
 
 /* Style for the text input */
-#promptInput {
+input,
+textarea {
     display: block;
     width: calc(100% - 20px);
     width: -webkit-fill-available;
     height: 3.8em;
-    flex-grow: 1;
+    /*     flex-grow: 1; */
     padding: 1.6em 4em 1.6em 1.6em;
     border: none;
     border-radius: 4px;
@@ -62,14 +71,39 @@ body {
     border-bottom: 1px solid var(--card-bg-color);
 }
 
-#promptInput::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: var(--text-alt-color);
 }
 
-#promptInput:focus,
-#promptInput:focus-visible {
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
     outline: 0;
     border-color: var(--light-accent);
+}
+
+button {
+    padding: 0.7em 0.8em 0.6em;
+    background-color: var(--button-bg-color);
+    color: var(--text-color);
+    margin-top: 0.8em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background: var(--button-bg-hover)
+        radial-gradient(circle, transparent 1%, var(--button-bg-color) 1%)
+        center/15000%;
+}
+
+button:active {
+    background-color: var(--button-bg-active);
+    background-size: 100%;
+    transition: background 0s;
 }
 
 #sendPromptButton {
@@ -77,42 +111,17 @@ body {
     bottom: 0.8em;
     right: 0.8em;
     border-radius: 50%;
-    padding: 0.7em 0.8em 0.6em;
-    background-color: var(--button-bg-color);
     filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.14))
         drop-shadow(0 1px 10px rgba(0, 0, 0, 0.12))
         drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     background-position: center;
     transition: background 0.8s;
-}
-
-#sendPromptButton:hover {
-    background: var(--button-bg-hover)
-        radial-gradient(circle, transparent 1%, var(--button-bg-color) 1%)
-        center/15000%;
-}
-
-#sendPromptButton:active {
-    background-color: var(--button-bg-active);
-    background-size: 100%;
-    transition: background 0s;
+    margin: 0;
 }
 
 #sendPromptButton:disabled {
     background: var(--button-bg-disabled);
     cursor: no-drop;
-}
-
-/* General button styling */
-button {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Button hover effect */
-button:hover {
-    background-color: #454545; /* Slightly lighter grey on hover */
 }
 
 .response-wrapper {

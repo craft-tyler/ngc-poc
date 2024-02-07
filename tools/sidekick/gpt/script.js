@@ -80,13 +80,21 @@ function appendConversationActions(el) {
         actionsContainer.className = "actions-container";
         const copyAction = document.createElement("button");
         copyAction.innerHTML = "copy";
-        const insertAction = document.createElement("button");
-        insertAction.innerHTML = "insert";
 
         actionsContainer.appendChild(actionsInner);
-        actionsInner.append(copyAction, insertAction);
+        actionsInner.appendChild(copyAction);
         el.appendChild(actionsContainer);
+        copyButtonObserver(copyAction);
     }
+}
+
+function copyButtonObserver(el) {
+    el.addEventListener("click", (event) => {
+        const response = event.target
+            .closest(".assistant-wrapper")
+            .querySelector(".assistant").innerHTML;
+        navigator.clipboard.writeText(response);
+    });
 }
 
 function sendChatGptPrompt(prompt) {
@@ -172,7 +180,5 @@ function showLoadingIndicator(show) {
         loadingIndicator.style.display = "none";
     }
 }
-
-console.log(window.parent);
 
 checkForApiKey();
