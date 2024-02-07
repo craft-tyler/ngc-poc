@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Edge Delivery Services - GPT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="loginScreen" class="screen">
+        <input type="text" id="apiKeyInput" placeholder="Enter your ChatGPT API Key">
+        <button id="loginButton">Login</button>
+    </div>
+    
+    <div id="chatScreen" class="screen" style="display:none;">
+        <div class="response-wrapper">
+            <div id="responseOutput" style="display:none;"></div>
+        </div>
+        <div class="prompt-wrapper">
+            <textarea id="promptInput" placeholder="Enter your prompt here"></textarea>
+            <button id="sendPromptButton">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 8L6 14L7.41 15.41L12 10.83L16.59 15.41L18 14L12 8Z" fill="white" fill-opacity="0.87" />
+                </svg>
+            </button>
+            <div id="loadingIndicator" class="loading-indicator">
+                Loading...
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

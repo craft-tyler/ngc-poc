@@ -13,8 +13,6 @@ import {
   waitForLCP,
 } from './lib-franklin.js';
 
-import {gptsk} from './gpt/gpt.js';
-
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
@@ -217,4 +215,3 @@ async function loadPage() {
 }
 
 loadPage();
-gptsk();
