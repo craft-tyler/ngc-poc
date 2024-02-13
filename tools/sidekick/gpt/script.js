@@ -5,6 +5,16 @@ const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Accept", "application/json");
 
+function initConversationHistory() {
+    conversationHistory = [
+        {
+            role: "user",
+            content:
+                "All responses should be returned as html markup as this response will be displayed on an web page."
+        }
+    ];
+}
+
 function checkForApiKey() {
     const storedApiKey = localStorage.getItem("chatGptApiKey");
     if (storedApiKey) {
@@ -40,13 +50,6 @@ document
             alert("Please enter a prompt");
         }
     });
-
-// document.getElementById("copyButton").addEventListener("click", function () {
-//     const response = document.getElementById("responseOutput").innerText;
-//     navigator.clipboard.writeText(response).then(() => {
-//         alert("Response copied to clipboard");
-//     });
-// });
 
 function updateConversationHistory(prompt, response) {
     // Add the user's prompt and ChatGPT's response to the history
@@ -182,3 +185,4 @@ function showLoadingIndicator(show) {
 }
 
 checkForApiKey();
+initConversationHistory();
