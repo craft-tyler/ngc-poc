@@ -70,7 +70,7 @@ function displayConversationHistory() {
         messageContainer.append(messageRole, messageDiv);
         messageContainer.className = message.role + "-wrapper";
         messageDiv.className = message.role;
-        messageDiv.textContent = message.content;
+        messageDiv.innerHTML = message.content;
         chatContainer.appendChild(messageContainer);
         appendConversationActions(messageContainer);
     });
