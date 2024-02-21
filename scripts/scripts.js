@@ -198,6 +198,13 @@ if (sk) {
   }, { once: true });
 }
 
+const isLighthouse = /lighthouse/i.test(navigator.userAgent);
+
+// Conditionally execute JavaScript based on whether Lighthouse is detected
+if (isLighthouse) {
+  document.body.style.backgroundColor = "red"
+}
+
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
