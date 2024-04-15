@@ -91,12 +91,18 @@ function appendConversationActions(el) {
     }
 }
 
+function sanitize(content) {
+    const pattern = /<\/?[\w ="'-:;\/\.]+>/g;
+
+    return content.replaceAll(pattern, "").trim();
+}
+
 function copyButtonObserver(el) {
     el.addEventListener("click", (event) => {
         const response = event.target
             .closest(".assistant-wrapper")
             .querySelector(".assistant").innerHTML;
-        navigator.clipboard.writeText(response);
+        navigator.clipboard.writeText(sanitize(response));
     });
 }
 
