@@ -20,7 +20,7 @@
             "id": "gpt",
             "title": "GPT",
             "environments": ["edit"],
-            "url": "/tools/sidekick/gpt/gpt.html",
+            "url": "https://35582-edsgenai-stage.adobeio-static.net/index.html",
             "isPalette": true,
             "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
         },
