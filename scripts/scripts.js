@@ -168,8 +168,41 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  // loadHeader(doc.querySelector('header'));
+  // loadFooter(doc.querySelector('footer'));
+
+  try {
+    const response = await fetch('https://prod-sandbox.m2cloud.blueacorn.net/empty-page');
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+
+    const html = await response.text();
+    const parser = new DOMParser();
+    const newDoc = parser.parseFromString(html, "text/html");
+
+    // Append stylesheets and scripts to the head
+    const headElements = newDoc.querySelectorAll('link[rel="stylesheet"], script');
+    document.head.append(...headElements);
+
+    // Replace header and footer
+    const newHeader = newDoc.querySelector('header');
+    const newFooter = newDoc.querySelector('footer');
+    const currentHeader = document.querySelector('header');
+    const currentFooter = document.querySelector('footer');
+
+    if (newHeader && currentHeader) {
+      currentHeader.replaceWith(newHeader);
+    }
+
+    if (newFooter && currentFooter) {
+      currentFooter.replaceWith(newFooter);
+    }
+
+    console.log('Header and footer updated successfully.');
+  } catch (error) {
+    console.error('Error fetching and updating header/footer:', error);
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
