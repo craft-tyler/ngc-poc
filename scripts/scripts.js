@@ -181,9 +181,19 @@ async function loadLazy(doc) {
     const parser = new DOMParser();
     const newDoc = parser.parseFromString(html, "text/html");
 
-    // Append stylesheets and scripts to the head
-    const headElements = newDoc.querySelectorAll('link[rel="stylesheet"], script');
+    // Append stylesheets to the head
+    const headElements = newDoc.querySelectorAll('link[rel="stylesheet"]');
     document.head.append(...headElements);
+
+    // Append scripts to the end of the body using outerHTML
+    const scriptElements = newDoc.querySelectorAll('script');
+    scriptElements.forEach(script => {
+      const newScript = document.createElement('script');
+      newScript.src = script.src;
+      newScript.type = script.type;
+      newScript.async = script.async;
+      document.body.appendChild(newScript);
+    });
 
     // Replace header and footer
     const newHeader = newDoc.querySelector('header');
