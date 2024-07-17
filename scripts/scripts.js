@@ -185,15 +185,40 @@ async function loadLazy(doc) {
     const headElements = newDoc.querySelectorAll('link[rel="stylesheet"]');
     document.head.append(...headElements);
 
-    // Append scripts to the end of the body using outerHTML
-    const scriptElements = newDoc.querySelectorAll('script');
-    scriptElements.forEach(script => {
+    // Collect scripts and separate external scripts from inline scripts
+    const scriptElements = Array.from(newDoc.querySelectorAll('script'));
+    const externalScripts = scriptElements.filter(script => script.src);
+    const inlineScripts = scriptElements.filter(script => !script.src);
+
+    // Function to create and append script elements
+    const appendScript = (script, callback) => {
       const newScript = document.createElement('script');
-      newScript.src = script.src;
       newScript.type = script.type;
-      newScript.async = script.async;
+
+      if (script.src) {
+        newScript.src = script.src;
+        newScript.async = script.async;
+        newScript.onload = callback;
+      } else {
+        newScript.innerHTML = script.innerHTML;
+      }
+
       document.body.appendChild(newScript);
-    });
+    };
+
+    // Append inline scripts first
+    inlineScripts.forEach(script => appendScript(script));
+
+    // Append external scripts with the proper loading order
+    let loadNextScript = () => {
+      if (externalScripts.length > 0) {
+        const nextScript = externalScripts.shift();
+        appendScript(nextScript, loadNextScript);
+      }
+    };
+
+    // Start loading external scripts
+    loadNextScript();
 
     // Replace header and footer
     const newHeader = newDoc.querySelector('header');
