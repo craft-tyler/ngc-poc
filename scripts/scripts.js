@@ -7,11 +7,16 @@ import {
   decorateTemplateAndTheme,
   loadBlocks,
   loadCSS,
-  loadFooter,
-  loadHeader,
   sampleRUM,
   waitForLCP,
 } from './lib-franklin.js';
+import {
+  initCommerceNavigation,
+  loadCommerceFooter,
+  loadCommerceHeader,
+  loadCommerceScripts,
+  loadCommerceStyles,
+} from './commerceNav.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -131,12 +136,17 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  initCommerceNavigation('https://prod-sandbox.m2cloud.blueacorn.net/empty-page');
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+
+  await loadCommerceStyles();
 }
 
 /**
@@ -168,76 +178,11 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  // loadHeader(doc.querySelector('header'));
-  // loadFooter(doc.querySelector('footer'));
-
-  try {
-    const response = await fetch('https://prod-sandbox.m2cloud.blueacorn.net/empty-page');
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-
-    const html = await response.text();
-    const parser = new DOMParser();
-    const newDoc = parser.parseFromString(html, "text/html");
-
-    // Append stylesheets to the head
-    const headElements = newDoc.querySelectorAll('link[rel="stylesheet"]');
-    document.head.append(...headElements);
-
-    // Collect scripts and separate external scripts from inline scripts
-    const scriptElements = Array.from(newDoc.querySelectorAll('script'));
-    const externalScripts = scriptElements.filter(script => script.src);
-    const inlineScripts = scriptElements.filter(script => !script.src);
-
-    // Function to create and append script elements
-    const appendScript = (script, callback) => {
-      const newScript = document.createElement('script');
-      newScript.type = script.type;
-
-      if (script.src) {
-        newScript.src = script.src;
-        newScript.async = script.async;
-        newScript.onload = callback;
-      } else {
-        newScript.innerHTML = script.innerHTML;
-      }
-
-      document.body.appendChild(newScript);
-    };
-
-    // Append inline scripts first
-    inlineScripts.forEach(script => appendScript(script));
-
-    // Append external scripts with the proper loading order
-    let loadNextScript = () => {
-      if (externalScripts.length > 0) {
-        const nextScript = externalScripts.shift();
-        appendScript(nextScript, loadNextScript);
-      }
-    };
-
-    // Start loading external scripts
-    loadNextScript();
-
-    // Replace header and footer
-    const newHeader = newDoc.querySelector('header');
-    const newFooter = newDoc.querySelector('footer');
-    const currentHeader = document.querySelector('header');
-    const currentFooter = document.querySelector('footer');
-
-    if (newHeader && currentHeader) {
-      currentHeader.replaceWith(newHeader);
-    }
-
-    if (newFooter && currentFooter) {
-      currentFooter.replaceWith(newFooter);
-    }
-
-    console.log('Header and footer updated successfully.');
-  } catch (error) {
-    console.error('Error fetching and updating header/footer:', error);
-  }
+  await Promise.allSettled([
+    loadCommerceHeader(),
+    loadCommerceFooter(),
+    loadCommerceScripts(),
+  ]);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
@@ -252,7 +197,7 @@ const linksInit = () => {
   const sk = detail.data;
 
   console.log(sk);
-}
+};
 
 const sk = document.querySelector('helix-sidekick');
 if (sk) {
@@ -270,7 +215,7 @@ const isLighthouse = /lighthouse/i.test(navigator.userAgent);
 
 // Conditionally execute JavaScript based on whether Lighthouse is detected
 if (isLighthouse) {
-  document.body.style.backgroundColor = "red"
+  document.body.style.backgroundColor = 'red';
 }
 
 /**
