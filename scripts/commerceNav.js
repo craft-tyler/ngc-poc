@@ -1,7 +1,7 @@
 let navPromise = null;
 
 async function loadNav(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { credentials: 'same-origin' });
   const htmlString = await response.text();
   const parser = new DOMParser();
   const newDoc = parser.parseFromString(htmlString, 'text/html');
@@ -20,13 +20,24 @@ export function initCommerceNavigation(url) {
   }
 }
 
+export async function loadCommerceEagerStyles(pattern) {
+  const { styles } = await navPromise;
+  document.querySelector('header')?.classList?.add('page-header');
+  document.querySelector('footer')?.classList?.add('page-footer');
+  const eagerStyles = styles.filter((style) => (!style.href || style.href.match(pattern)))
+    .filter((style) => (!style.media || window.matchMedia(style.media).matches));
+  document.head.append(...eagerStyles);
+  const promises = eagerStyles.filter((style) => style.href)
+    .map((style) => new Promise((resolve, reject) => {
+      style.onload = resolve;
+      style.onerror = reject;
+    }));
+  return Promise.allSettled(promises);
+}
+
 export async function loadCommerceStyles() {
   const { styles } = await navPromise;
   document.head.append(...styles);
-  return new Promise((resolve) => {
-    const mainCss = document.head.querySelector('link[rel=stylesheet][href*="/css/styles-m."]');
-    mainCss.onload = resolve;
-  });
 }
 
 function loadScript(scriptTag) {

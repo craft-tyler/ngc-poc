@@ -12,6 +12,7 @@ import {
 } from './lib-franklin.js';
 import {
   initCommerceNavigation,
+  loadCommerceEagerStyles,
   loadCommerceFooter,
   loadCommerceHeader,
   loadCommerceScripts,
@@ -138,15 +139,15 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
 
   initCommerceNavigation('https://prod-sandbox.m2cloud.blueacorn.net/empty-page');
+  const stylesPromise = loadCommerceEagerStyles(/\/css\/styles-[ml]/);
 
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    await stylesPromise;
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
-
-  await loadCommerceStyles();
 }
 
 /**
@@ -181,6 +182,7 @@ async function loadLazy(doc) {
   await Promise.allSettled([
     loadCommerceHeader(),
     loadCommerceFooter(),
+    loadCommerceStyles(),
     loadCommerceScripts(),
   ]);
 
