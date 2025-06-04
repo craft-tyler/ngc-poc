@@ -71,7 +71,7 @@ body.appear {
 }
 
 header {
-  min-height: 77px;
+  height: var(--nav-height);
 }
 
 h1, h2, h3,
@@ -240,10 +240,6 @@ main .section {
   .section > div {
     max-width: 1200px;
     margin: auto;
-  }
-
-  header {
-    min-height: 140px;
   }
 }
 

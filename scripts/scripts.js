@@ -7,17 +7,11 @@ import {
   decorateTemplateAndTheme,
   loadBlocks,
   loadCSS,
+  loadFooter,
+  loadHeader,
   sampleRUM,
   waitForLCP,
 } from './lib-franklin.js';
-import {
-  initCommerceNavigation,
-  loadCommerceEagerStyles,
-  loadCommerceFooter,
-  loadCommerceHeader,
-  loadCommerceScripts,
-  loadCommerceStyles,
-} from './commerceNav.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -137,14 +131,9 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-
-  initCommerceNavigation('https://prod-sandbox.m2cloud.blueacorn.net/empty-page');
-  const stylesPromise = loadCommerceEagerStyles(/\/css\/styles-[ml]/);
-
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await stylesPromise;
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
@@ -179,12 +168,8 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await Promise.allSettled([
-    loadCommerceHeader(),
-    loadCommerceFooter(),
-    loadCommerceStyles(),
-    loadCommerceScripts(),
-  ]);
+  loadHeader(doc.querySelector('header'));
+  loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
@@ -199,7 +184,7 @@ const linksInit = () => {
   const sk = detail.data;
 
   console.log(sk);
-};
+}
 
 const sk = document.querySelector('helix-sidekick');
 if (sk) {
@@ -217,7 +202,7 @@ const isLighthouse = /lighthouse/i.test(navigator.userAgent);
 
 // Conditionally execute JavaScript based on whether Lighthouse is detected
 if (isLighthouse) {
-  document.body.style.backgroundColor = 'red';
+  document.body.style.backgroundColor = "red"
 }
 
 /**
